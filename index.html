@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Riot API Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="summoner-info"></div>
+
+    <script>
+        $(document).ready(function() {
+
+            var apiKey = 'RGAPI-a0bbf35e-8247-4bc1-97f9-d0712ea68d15';
+            var summonerName = 'N0 gank N0 win';
+            var url = `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`;
+
+            // Riot API에서 데이터 가져오기
+            $.ajax({
+                url: url,
+                headers: {
+                    'X-Riot-Token': apiKey
+                },
+                method: 'GET',
+                success: function(data) {
+                    // JSON 데이터를 처리하여 원하는 방식으로 표시
+                    var summonerInfo = `
+                        <h2>${data.name}</h2>
+                        <p>Level: ${data.summonerLevel}</p>
+                        <p>Profile Icon ID: ${data.profileIconId}</p>
+                        <p>Revision Date: ${data.revisionDate}</p>
+                    `;
+
+                    // HTML 요소에 표시
+                    $('#summoner-info').html(summonerInfo);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // 에러 처리
+                    var errorMessage = `API Request Failed: ${textStatus} (${jqXHR.status} ${jqXHR.statusText})`;
+                    $('#summoner-info').html(errorMessage);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
